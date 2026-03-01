@@ -22,8 +22,6 @@ public:
 private slots:
     void on_btnOpenSerialPort_released();
 
-    void on_pushButton_released();
-
     void on_btnRefreshSerialPort_released();
 
     void on_btnRefreshSerialPort_clicked();

@@ -21,20 +21,37 @@ void MainWindow::on_btnOpenSerialPort_released()
         return;
     }
 
-    QString port = ui->cmbSerialPorts->itemText(ui->cmbSerialPorts->currentIndex());
-    serialPort.Start(port.toStdString(), 9600);
+    if(serialPort.IsOpen())
+    {
+        serialPort.Stop();
+        ui->btnOpenSerialPort->setText("Open");
+        ui->btnRefreshSerialPort->setEnabled(true);
+        ui->cmbSerialPorts->setEnabled(true);
+        return;
+    }
 
+    QString port = ui->cmbSerialPorts->itemText(ui->cmbSerialPorts->currentIndex());
+    if(serialPort.Start(port.toStdString(), 9600))
+    {
+        serialPort.SetOnRx([this](char* data, size_t len)
+        {
+           QString line = QString::fromUtf8(data, len);
+           QMetaObject::invokeMethod(this, [this, line]()
+                                     {
+                                         ui->txtBoxOutSerialPort->insertPlainText(line);
+                                     }, Qt::QueuedConnection);
+        });
+
+        ui->btnOpenSerialPort->setText("Close");
+        ui->btnRefreshSerialPort->setEnabled(false);
+        ui->cmbSerialPorts->setEnabled(false);
+    }
 }
 
 void MainWindow::on_btnRefreshSerialPort_released()
 {
 
 }
-
-// void MainWindow::on_pushButton_released()
-// {
-
-// }
 
 void MainWindow::on_btnRefreshSerialPort_clicked()
 {
