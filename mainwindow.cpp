@@ -1,11 +1,17 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    QVBoxLayout *layout = new QVBoxLayout(ui->wdg3dviewer);
+    QWidget *container = QWidget::createWindowContainer(viewer3D.window());
+    layout->addWidget(container);
+    on_btnRefreshSerialPort_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -38,8 +44,19 @@ void MainWindow::on_btnOpenSerialPort_released()
            QString line = QString::fromUtf8(data, len);
            QMetaObject::invokeMethod(this, [this, line]()
                                      {
-                                         ui->txtBoxOutSerialPort->insertPlainText(line);
-                                     }, Qt::QueuedConnection);
+                                        QStringList list = line.split("\r");
+                                        QString time = QDateTime::currentDateTime().toString("HH:mm:ss");
+                                        foreach (QString line, list)
+                                        {
+                                            ui->ltwOutSerialPort->addItem("[" + time + "] " + line);
+                                        }
+
+                                        if(ui->rbnLogScroll->isChecked())
+                                        {
+                                            ui->ltwOutSerialPort->scrollToBottom();
+                                        }
+                                     },
+                                     Qt::QueuedConnection);
         });
 
         ui->btnOpenSerialPort->setText("Close");
@@ -64,5 +81,15 @@ void MainWindow::on_btnRefreshSerialPort_clicked()
     {
         ui->cmbSerialPorts->addItem(ports[i].c_str());
     }
+}
+
+void MainWindow::on_btnLogClear_clicked()
+{
+    ui->ltwOutSerialPort->clear();
+}
+
+void MainWindow::on_rbnLogScroll_toggled(bool checked)
+{
+    ui->ltwOutSerialPort->scrollToBottom();
 }
 
