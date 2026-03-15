@@ -4,6 +4,7 @@
 #include "serialport.h"
 #include "tcpclient.h"
 #include <QMainWindow>
+#include "viewer3d.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,14 +22,15 @@ public:
 
 private slots:
     void on_btnOpenSerialPort_released();
-
     void on_btnRefreshSerialPort_released();
-
     void on_btnRefreshSerialPort_clicked();
+    void on_btnLogClear_clicked();
+    void on_rbnLogScroll_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
     SerialPort serialPort;
     TcpClient tcpClient;
+    Viewer3D viewer3D;
 };
 #endif // MAINWINDOW_H
