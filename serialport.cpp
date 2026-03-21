@@ -125,7 +125,7 @@ void SerialPort::ThRx()
     thRxRunning = true;
     uint32_t sleepMax = 1;
 
-    char buffer[256];
+    char buffer[1024];
     DWORD bytesRead;
 
     while(thRxEnabled)
@@ -146,10 +146,10 @@ void SerialPort::ThRx()
             //std::cout << "Recebido: " << data << std::endl;
         }
 
-        uint32_t cont = 0;
+        uint32_t cont = 1;
         while(cont++ < sleepMax && thRxEnabled)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 

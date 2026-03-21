@@ -12,7 +12,6 @@ public:
     bool Start(std::string port, int baud);
     bool Stop();
     void SetOnRx(std::function<void(char*, int)> cb);
-
     std::vector<std::string> GetSerialPorts();
     bool IsOpen(){return isOpened;}
 
