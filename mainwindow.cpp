@@ -77,6 +77,16 @@ void MainWindow::on_btnOpenSerialPort_released()
             logBuffer.append(line);
         });
 
+        bridge.SetOnRxCoords([this](float lat, float lng, float alt)
+        {
+            QMetaObject::invokeMethod(this,[=]()
+            {
+                ui->txtLat->setText(QString::number(lat,'f',8));
+                ui->txtLng->setText(QString::number(lng,'f',8));
+                ui->txtHeight->setText(QString::number(alt,'f',3));
+            });
+        });
+
         bridge.SetOnRxDataImu([this](float acc_x, float acc_y, float acc_z, float gyr_x, float gyr_y, float gyr_z, float temp)
         {
             QMetaObject::invokeMethod(this,[=]()
