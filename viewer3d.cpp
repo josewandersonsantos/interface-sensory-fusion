@@ -65,7 +65,7 @@ void Viewer3D::createAxis()
 
         auto *mesh = new Qt3DExtras::QCylinderMesh();
 
-        mesh->setRadius(0.02);
+        mesh->setRadius(0.05);
         mesh->setLength(3);
 
         auto *mat = new Qt3DExtras::QPhongMaterial();
@@ -83,25 +83,11 @@ void Viewer3D::createAxis()
     };
 
     /* X axis (red) */
-    createAxisLine(
-        QVector3D(1.5,0,0),
-        QVector3D(0,0,90),
-        QColor(255,0,0)
-        );
-
+    createAxisLine(QVector3D(1.5,0,0), QVector3D(0,0,90), QColor(255,0,0));
     /* Y axis (green) */
-    createAxisLine(
-        QVector3D(0,1.5,0),
-        QVector3D(0,0,0),
-        QColor(0,255,0)
-        );
-
+    createAxisLine(QVector3D(0,1.5,0), QVector3D(0,0,0), QColor(0,255,0));
     /* Z axis (blue) */
-    createAxisLine(
-        QVector3D(0,0,1.5),
-        QVector3D(90,0,0),
-        QColor(0,0,255)
-        );
+    createAxisLine(QVector3D(0,0,1.5), QVector3D(90,0,0), QColor(0,0,255));
 }
 
 void Viewer3D::createGrid()
