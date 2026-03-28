@@ -68,7 +68,7 @@ void MainWindow::on_btnOpenSerialPort_released()
     }
 
     QString port = ui->cmbSerialPorts->itemText(ui->cmbSerialPorts->currentIndex());
-    if(bridge.Connect(port.toStdString(), 9600))
+    if(bridge.Connect(port.toStdString(), 230400))
     {
         bridge.SetOnRxDataGps([this](char* data, size_t len)
         {
